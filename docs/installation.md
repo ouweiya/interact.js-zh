@@ -1,65 +1,61 @@
 ---
-title: Installation
+title: 安装
 ---
 
-interact.js offers two sets of free packages that you can add to your project:
+interact.js 提供两种免费的包供您添加到项目中：
 
-1.  To get started quickly, you can use the package named `interactjs` on npm.
-    This package contains all the features of the library as an _ES5 bundled_.
-2.  If you'd like to keep your JS payload small, there are npm packages under
-    the `@interactjs/` scope which let you choose which features to include.
-    These packages are distributed as _ES6 modules_ and may need to be
-    transpiled for older browsers.
+1.  如果想快速开始，您可以使用 npm 上名为 `interactjs` 的包。
+    这个包包含了库的所有功能，以 _ES5 打包版本_ 提供。
+2.  如果您想保持 JS 体积较小，可以使用 `@interactjs/` 作用域下的 npm 包，
+    让您可以选择需要包含的功能。这些包以 _ES6 模块_ 的形式分发，可能需要
+    为旧版浏览器进行转译。
 
-### npm pre-bundled
+### npm 预打包版本
 
-```sh
-# install pre-bundled package with all features
+```sh 
+# 安装包含所有功能的预打包版本
 $ npm install --save interactjs
 ```
 
 ```js
-// es6 import
+// es6 导入
 import interact from 'interactjs'
 ```
 
 ```js
-// or if using commonjs or AMD
+// 或者如果使用 commonjs 或 AMD
 const interact = require('interactjs')
 ```
 
-To use the pre-bundled package with [npm](https://docs.npmjs.com/about-npm/),
-install the package as a dependency with `npm install interactjs` then import or
-require the package in your JavaScript files.
+要通过 [npm](https://docs.npmjs.com/about-npm/) 使用预打包版本，
+请使用 `npm install interactjs` 将包安装为依赖项，然后在 JavaScript 文件中导入或
+require 该包。
 
-### CDN pre-bundled
+### CDN 预打包版本
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-<!-- or -->
+<!-- 或 -->
 <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
 ```
 
-You can also use the [jsDelivr](https://www.jsdelivr.com/package/npm/interactjs)
-or [unpkg](https://unpkg.com/interactjs) CDNs by adding a `<script>` tag
-pointing to their servers.
+您也可以通过添加指向 [jsDelivr](https://www.jsdelivr.com/package/npm/interactjs)
+或 [unpkg](https://unpkg.com/interactjs) CDN 服务器的 `<script>` 标签来使用。
 
-`interact` is exposed as a CommonJS module, an AMD module, or a global variable
-depending on what the environment supports.
+`interact` 会根据环境支持的情况被暴露为 CommonJS 模块、AMD 模块或全局变量。
 
 ```sh
-# install just the type definitions
+# 仅安装类型定义
 $ npm install --save-dev @interactjs/types
 ```
 
-If you're using the library only through a CDN and want the TypeScript type
-definitions for development, you can install the `@interactjs/types` package as
-a dev dependency.
+如果您仅通过 CDN 使用该库并想要用于开发的 TypeScript 类型
+定义，可以将 `@interactjs/types` 包安装为开发依赖。
 
-### npm streamlined
+### npm 精简版本
 
 ```sh
-# install only the features you need
+# 仅安装您需要的功能
 $ npm install --save @interactjs/interact \
   @interactjs/auto-start \
   @interactjs/actions \
@@ -84,21 +80,20 @@ interact('.item').draggable({
 })
 ```
 
-For a more streamlined JS payload, you can install and import the package for
-each feature you need:
+为了获得更精简的 JS 体积，您可以为每个需要的功能安装并导入相应的包：
 
-| Package name                                           | Description                                                                                                                              |
-| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `@interactjs/interact`                                 | **(required)** provides the `interact()` method                                                                                          |
-| [`@interactjs/actions`](action-options)                | Drag, resize, gesture actions                                                                                                            |
-| [`@interactjs/auto-start`](auto-start)                 | Start actions with pointer down, move sequence                                                                                           |
-| [`@interactjs/modifiers`](modifiers)                   | Snap, restrict, etc. modifiers                                                                                                           |
-| `@interactjs/snappers`                                 | Provides `interact.snappers.grid()` utility                                                                                              |
-| [`@interactjs/inertia`](inertia)                       | Drag and resize inertia-like throwing                                                                                                    |
-| [`@interactjs/reflow`](reflow)                         | `interactable.reflow(action)` method to trigger modifiers and event listeners                                                            |
-| [`@interactjs/dev-tools`](tooling#interactjsdev-tools) | Console warnings for common mistakes (optimized out when `NODE_ENV === 'production'`) and a babel plugin for optimized production builds |
+| 包名                                                    | 描述                                                                                                         |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `@interactjs/interact`                                 | **(必需)** 提供 `interact()` 方法                                                                           |
+| [`@interactjs/actions`](action-options)                | 拖拽、调整大小、手势等动作                                                                                  |
+| [`@interactjs/auto-start`](auto-start)                 | 通过指针按下、移动序列开始动作                                                                              |
+| [`@interactjs/modifiers`](modifiers)                   | 捕捉、限制等修饰符                                                                                          |
+| `@interactjs/snappers`                                 | 提供 `interact.snappers.grid()` 工具                                                                         |
+| [`@interactjs/inertia`](inertia)                       | 拖拽和调整大小的惯性抛掷效果                                                                                |
+| [`@interactjs/reflow`](reflow)                         | `interactable.reflow(action)` 方法用于触发修饰符和事件监听器                                               |
+| [`@interactjs/dev-tools`](tooling#interactjsdev-tools) | 常见错误的控制台警告（在 `NODE_ENV === 'production'` 时优化掉）和用于优化生产构建的 babel 插件            |
 
-### CDN streamlined
+### CDN 精简版本
 
 ```html
 <script type="module">
@@ -117,14 +112,13 @@ each feature you need:
 </script>
 ```
 
-The packages above are also available on
-`https://cdn.interactjs.io/v[VERSION]/[UNSCOPED_NAME]`. You can import them in
-modern browser which support ES6 `import`s.
+上述包也可以在 `https://cdn.interactjs.io/v[VERSION]/[UNSCOPED_NAME]` 获取。
+您可以在支持 ES6 `import` 的现代浏览器中导入它们。
 
 ### Ruby on Rails
 
-[Rails 5.1+](https://rubyonrails.org/) supports the [yarn](http://yarnpkg.com/)
-package manager, so you can add interact.js to you app by running `yarn add interactjs`. Then require the library with:
+[Rails 5.1+](https://rubyonrails.org/) 支持 [yarn](http://yarnpkg.com/)
+包管理器，所以您可以通过运行 `yarn add interactjs` 将 interact.js 添加到您的应用中。然后使用以下方式引入库：
 
 ```rb
 //= require interactjs/interact

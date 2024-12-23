@@ -1,14 +1,13 @@
 ---
-title: Restrict
+title: 限制
 ---
 
-interact.js has 3 restriction modifiers available through the
-`interact.modifiers` object:
+interact.js 通过 `interact.modifiers` 对象提供了3种限制修饰符：
 
-- pointer coordinate-based `restrict`
-- element rect-based restriction `restrictRect`
-- element size-based `restrictSize` (resize only)
-- and element edge-based `restrictEdges` (resize only)
+- 基于指针坐标的 `restrict`
+- 基于元素矩形的 `restrictRect`
+- 基于元素大小的 `restrictSize`（仅用于调整大小）
+- 基于元素边缘的 `restrictEdges`（仅用于调整大小）
 
 ## `restrict()`
 
@@ -23,25 +22,20 @@ interact(target).draggable({
 })
 ```
 
-The `restriction` value specifies the area that the action will be confined to.
-The value can be:
+`restriction` 值用于指定动作将被限制在的区域。
+该值可以是：
 
-- a rect object with `top`, `left`, `bottom` and `right` or `x`, `y`,
-  `width` and `height`,
-- an element whose dimensions will be used as the restriction area,
-- a function which takes `(x, y, element)` and returns a rect or an element
-- one of these strings:
-- `'self'` – restrict to the target element's rect
-- `'parent'` – restrict to the rect of the element's parentNode or
-- a CSS selector string – if one of the parents of the target element matches
-  this selector, it's rect will be used as the restriction area.
+- 一个包含 `top`、`left`、`bottom` 和 `right` 或 `x`、`y`、`width` 和 `height` 的矩形对象
+- 一个元素，其尺寸将被用作限制区域
+- 一个接收 `(x, y, element)` 参数并返回矩形或元素的函数
+- 以下字符串之一：
+  - `'self'` – 限制在目标元素的矩形区域内
+  - `'parent'` – 限制在元素父节点的矩形区域内
+  - CSS选择器字符串 – 如果目标元素的某个父元素匹配此选择器，将使用该元素的矩形区域作为限制区域
 
 ### `restrictRect()`
 
-With the `restrict` variant, restricting is by default relative to the pointer
-coordinates so that the action coordinates, not the element's dimensions, will
-be kept within the restriction area. You can use the `restrictRect` variant so
-that the element's edges are considered while dragging.
+使用 `restrict` 变体时，限制默认是相对于指针坐标的，这样动作坐标（而不是元素尺寸）将被限制在限制区域内。你可以使用 `restrictRect` 变体，这样在拖动时会考虑元素的边缘。
 
 ```javascript
 interact(target).draggable({
@@ -53,22 +47,15 @@ interact(target).draggable({
 })
 ```
 
-If the target element is larger than the restriction, then the element will be
-allowed to move around the restriction.
+如果目标元素大于限制区域，则允许元素在限制区域内移动。
 
 ### `elementRect`
 
-`restrictRect` is identical to `restrict`, but the `elementRect` option is set
-to a helpful default of `{ left: 0, right: 0, top: 1, bottom: 1 }`. The
-`elementRect` option specifies the area of the element to consider as its edges
-as scalar values from the top left edges to the bottom right.
+`restrictRect` 与 `restrict` 相同，但 `elementRect` 选项默认设置为 `{ left: 0, right: 0, top: 1, bottom: 1 }`。`elementRect` 选项通过从左上角边缘到右下角的标量值来指定要考虑的元素边缘区域。
 
-For the `left` and `right` properties, `0` means the left edge of the element
-and `1` means the right edge. For `top` and `bottom`, `0 means` the top edge of
-the element and 1 means the bottom.
+对于 `left` 和 `right` 属性，`0` 表示元素的左边缘，`1` 表示右边缘。对于 `top` 和 `bottom`，`0` 表示元素的顶部边缘，`1` 表示底部。
 
-`{ top: 0.25, left: 0.25, bottom: 0.75, right: 0.75 }` would result in a quarter
-of the element being allowed to hang over the restriction edges.
+`{ top: 0.25, left: 0.25, bottom: 0.75, right: 0.75 }` 将允许元素四分之一的部分悬挂在限制边缘之外。
 
 ## `restrictSize()`
 
@@ -83,8 +70,7 @@ interact(target).resizable({
 })
 ```
 
-`restrictSize` lets you specify the minimum and maximum dimensions that the
-target element must have when resizing.
+`restrictSize` 允许你指定调整大小时目标元素必须具有的最小和最大尺寸。
 
 ## `restrictEdges()`
 
@@ -93,18 +79,16 @@ interact(target).resizable({
   modifiers: [
     interact.modifiers.restrictEdges({
       inner: {
-        left: 100,  // the left edge must be <= 100
-        right: 200  // the right edge must be >= 200
+        left: 100,  // 左边缘必须 <= 100
+        right: 200  // 右边缘必须 >= 200
       }
       outer: {
-        left: 0,    // the left edge must be >= 0
-        right: 300  // the right edge must be <= 300
+        left: 0,    // 左边缘必须 >= 0
+        right: 300  // 右边缘必须 <= 300
       }
     })
   ]
 })
 ```
 
-`restrictEdges` lets you specify `inner` and `outer` dimensions that the target
-element must have when resizing. You can think of `inner` as setting the minimum
-size of the element and `outer` as the maximum size.
+`restrictEdges` 允许你指定调整大小时目标元素必须具有的 `inner`（内部）和 `outer`（外部）尺寸。你可以将 `inner` 理解为设置元素的最小尺寸，将 `outer` 理解为最大尺寸。

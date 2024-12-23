@@ -1,66 +1,53 @@
 ---
-title: Introduction
+title: 介绍
 ---
 
-## What is interact.js?
+## interact.js 是什么？
 
-interact.js is a JavaScript library for drag and drop, resizing and multi-touch
-gestures for modern browsers. Its free and open source version comes with
-powerful options like inertia and modifiers for snapping and restricting.
+interact.js 是一个用于现代浏览器的拖放、调整大小和多点触控手势的 JavaScript 库。其免费开源版本提供了强大的功能选项，如惯性和用于对齐和限制的修饰器。
 
-The library's aim is to **present pointer input data consistently** across
-different browsers and devices and provide convenient ways to **pretend that the
-user's pointer moved in a way that it wasn't really moved** (snapping, inertia,
-etc.).
+该库的目标是**在不同浏览器和设备间一致地呈现指针输入数据**，并提供便捷的方式来**模拟用户指针以非实际移动的方式移动**（对齐、惯性等）。
 
-Note that by default **interact.js doesn't move elements for you**. Styling an
-element so that it moves while a drag happens has to be done from your own event
-listeners. This way, you’re in control of everything that happens.
+请注意，默认情况下 **interact.js 不会为你移动元素**。在拖动发生时设置元素的样式必须通过你自己的事件监听器来完成。这样，你可以完全控制所发生的一切。
 
 :::note
-If you prefer to have feedback out-of-the-box, have
-a look at <a href="/pro">interact.js Pro</a>. It comes with built-in hardware
-accelerated feedback, list reordering, spring physics, Vue & React components
-and more.
+如果你更喜欢开箱即用的反馈效果，不妨看看 <a href="/pro">interact.js Pro</a>。它带有内置的硬件加速反馈、列表重排序、弹簧物理效果、Vue & React 组件等更多功能。
 :::
 
 <div class="has-text-centered notice-cta">
-  <a href="/pro" class="button is-medium is-info has-text-white">Get Pro</a>
+  <a href="/pro" class="button is-medium is-info has-text-white">获取 Pro 版本</a>
 </div>
 
-## Getting Started
+## 入门指南
 
-After [installing the library](/docs/installation), the basic steps to setting
-up your targets and interactions are:
+在[安装库](/docs/installation)之后，设置你的目标和交互的基本步骤是：
 
-1.  Create an `Interactable` target.
-2.  Configure it to enable actions and add [modifiers](/docs/modifiers),
-    [inertia](/docs/inertia), etc.
-3.  Add event listeners to provide visual feedback and update your app's state.
+1.  创建一个 `Interactable` 目标。
+2.  配置它以启用操作并添加[修饰器](/docs/modifiers)、[惯性](/docs/inertia)等。
+3.  添加事件监听器以提供视觉反馈并更新你的应用状态。
 
-For example, here's some code for [a very simple slider
-input](https://codepen.io/taye/pen/GgpxNq):
+例如，这里有一个[非常简单的滑块输入](https://codepen.io/taye/pen/GgpxNq)的代码：
 
 <!-- <LiveDemo :demoHtml="import('@/demos/slider.html?raw')" :removeNext="1"/> -->
 [LiveDemo]
 
 ```js
-// Step 1
-const slider = interact('.slider')    // target elements with the "slider" class
+// 第1步
+const slider = interact('.slider')    // 选择带有"slider"类的目标元素
 
 slider
-  // Step 2
-  .draggable({                        // make the element fire drag events
-    origin: 'self',                   // (0, 0) will be the element's top-left
-    inertia: true,                    // start inertial movement if thrown
+  // 第2步
+  .draggable({                        // 使元素触发拖动事件
+    origin: 'self',                   // (0, 0)将是元素的左上角
+    inertia: true,                    // 如果抛出则启动惯性移动
     modifiers: [
       interact.modifiers.restrict({
-        restriction: 'self',           // keep the drag coords within the element
+        restriction: 'self',           // 将拖动坐标保持在元素内
       }),
     ],
   })
-  // Step 3
-  .on('dragmove', function (event) {  // call this listener on every dragmove
+  // 第3步
+  .on('dragmove', function (event) {  // 在每次dragmove时调用此监听器
     const sliderWidth = interact.getElementRect(event.target.parentNode).width
     const value = event.pageX / sliderWidth
 
@@ -69,26 +56,14 @@ slider
   })
 ```
 
-The `interact` function takes an element or a CSS selector string and returns an
-`Interactable` object which has various methods to configure actions and event
-listeners. Pointer interactions of down → move → up sequences begin drag,
-resize, or gesture actions. By adding event listener functions for these action,
-you can respond to `InteractEvent`s which provide pointer coordinates, speed,
-element size, etc.
+`interact` 函数接受一个元素或 CSS 选择器字符串，并返回一个 `Interactable` 对象，该对象具有各种配置操作和事件监听器的方法。指针交互的按下 → 移动 → 松开序列会开始拖动、调整大小或手势操作。通过为这些操作添加事件监听器函数，你可以响应提供指针坐标、速度、元素大小等信息的 `InteractEvent`。
 
-## Actions
+## 操作
 
-interact.js supports 3 basic action types which are triggered by pointer down →
-move → up sequences:
+interact.js 支持3种由指针按下 → 移动 → 松开序列触发的基本操作类型：
 
-- [Draggable](/docs/draggable) for moving elements or drawing on a canvas.
-  This can be combined with [dropzones](/docs/dropzone) to implement drag and
-  drop applications.
-- [Resizable](/docs/resizable) for watching the size and position of an
-  element while the pointer is used to move one or two of the element's edges.
-- [Gesturable](/docs/gesturable) for 2-finger gestures with angle, scale, etc.
-  data.
+- [可拖动](/docs/draggable)用于移动元素或在画布上绘画。这可以与[放置区域](/docs/dropzone)组合使用来实现拖放应用程序。
+- [可调整大小](/docs/resizable)用于在使用指针移动元素的一个或两个边缘时监视元素的大小和位置。
+- [可手势操作](/docs/gesturable)用于带有角度、缩放等数据的双指手势。
 
-Pro builds on the draggable action to provide [Sortable and
-Swappable](/docs/sortable) feature for drag and drop rearranging of lists of
-elements.
+Pro版本在可拖动操作的基础上提供了[可排序和可交换](/docs/sortable)功能，用于元素列表的拖放重排。

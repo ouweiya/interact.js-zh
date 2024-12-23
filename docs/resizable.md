@@ -1,42 +1,38 @@
 ---
-title: Resizable
+title: 可调整大小
 ---
 
 ```javascript
 interact(target)
   .resizable({
     edges: {
-      top   : true,       // Use pointer coords to check for resize.
-      left  : false,      // Disable resizing from left edge.
-      bottom: '.resize-s',// Resize if pointer target matches selector
-      right : handleEl    // Resize if pointer target is the given Element
+      top   : true,       // 使用指针坐标检查大小调整
+      left  : false,      // 禁用左边缘调整大小
+      bottom: '.resize-s',// 如果指针目标匹配选择器则调整大小
+      right : handleEl    // 如果指针目标是给定的元素则调整大小
     }
   })
 ```
 
-Resize events have `rect` and `deltaRect` properties. `rect` is updated on each
-`resizemove` event and the values in `deltaRect` reflect the changes. In
-`resizestart`, `rect` will be identical to the rect returned by
-`interactable.getRect(element)` and `deltaRect` will have all-zero properties.
+调整大小事件具有 `rect` 和 `deltaRect` 属性。`rect` 在每次 `resizemove` 事件中更新，而 `deltaRect` 中的值反映了变化。在 `resizestart` 中，`rect` 将与 `interactable.getRect(element)` 返回的矩形相同，而 `deltaRect` 的所有属性值都为零。
 
-| Resize Event property | Description                                       |
-| --------------------- | ------------------------------------------------- |
-| `edges`               | The edges of the element that are being changed   |
-| `rect`                | An object with the new dimensions of the target   |
-| `deltaRect`           | The change in dimensions since the previous event |
+| 调整大小事件属性 | 描述 |
+| --------------- | ---- |
+| `edges` | 正在改变的元素边缘 |
+| `rect` | 包含目标新尺寸的对象 |
+| `deltaRect` | 自上一个事件以来尺寸的变化 |
 
-Resizable options have an `edges` property which specifies the edges of the
-element which can be resized from (top, left, bottom or right).
+可调整大小的选项具有 `edges` 属性，它指定了可以从哪些边缘（上、左、下或右）调整元素大小。
 
 <!-- <LiveDemo :demoHtml="import('@/demos/resizable/basic.html?raw')" :removeNext="2" /> -->
 [LiveDemo]
 
 ```html
 <div data-x="0" data-y="0" class="resizable">
-  <!-- top-left resize handle -->
+  <!-- 左上调整大小手柄 -->
   <div class="resize-top resize-left"></div>
 
-  <!-- bottom-right resize handle -->
+  <!-- 右下调整大小手柄 -->
   <div class="resize-bottom resize-right"></div>
 </div>
 ```
@@ -64,18 +60,12 @@ interact('.resizable').resizable({
 ```
 
 :::warning
-Remember to use CSS `touch-action: none` to prevent the browser from panning
-when the user drags with a touch pointer, `user-select: none` to disable
-text selection, and `box-sizing: border-box` if your elements have padding and
-borders which affect their width.
+记得使用 CSS `touch-action: none` 以防止用户使用触摸指针拖动时浏览器发生平移，使用 `user-select: none` 禁用文本选择，如果你的元素有会影响其宽度的内边距和边框，请使用 `box-sizing: border-box`。
 :::
 
-If you'd like an element to behave as a resize corner, let it match the
-selectors of two adjacent edges.
+如果你想让一个元素作为调整大小的角落，让它匹配两个相邻边缘的选择器。
 
-Resize handle elements must be children of the resizable element. If you need
-the handles to be outside the target element, then you will need to use
-[`Interaction#start`](interaction-start).
+调整大小的手柄元素必须是可调整大小元素的子元素。如果你需要将手柄放在目标元素之外，那么你需要使用 [`Interaction#start`](interaction-start)。
 
 ### `invert`
 
@@ -86,27 +76,24 @@ interact(target).resizable({
 })
 ```
 
-By default, resize actions can't make the `event.rect` smaller than `0x0`. Use
-the `invert` option to specify what should happen if the target would be resized
-to dimensions less than `0x0`. The possible values are:
+默认情况下，调整大小的操作不能使 `event.rect` 小于 `0x0`。使用 `invert` 选项来指定当目标将被调整为小于 `0x0` 的尺寸时应该发生什么。可能的值包括：
 
-- `'none'` (default) will limit the resize rect to a minimum of `0x0`
-- `'negate'` will allow the rect to have negative width/height
-- `'reposition'` will keep the width/height positive by swapping the top and
-  bottom edges and/or swapping the left and right edges
+- `'none'`（默认值）将调整矩形的最小限制为 `0x0`
+- `'negate'` 将允许矩形具有负宽度/高度
+- `'reposition'` 将通过交换顶部和底部边缘和/或交换左右边缘来保持宽度/高度为正
 
 <!-- <LiveDemo :demoHtml="import('@/demos/resizable/invert.html?raw')" /> -->
 [LiveDemo]
 
-### Aspect ratio
+### 纵横比
 
 ```js
 interact(target).resizable({
   modifiers: [
     interact.modifiers.aspectRatio({
-      // make sure the width is always double the height
+      // 确保宽度始终是高度的两倍
       ratio: 2,
-      // also restrict the size by nesting another modifier
+      // 通过嵌套另一个修饰符来限制大小
       modifiers: [
         interact.modifiers.restrictSize({ max: 'parent' }),
       ],
@@ -115,17 +102,14 @@ interact(target).resizable({
 })
 ```
 
-interact.js comes with an `aspectRatio` modifier which can be used to force the
-resized rect to maintain a certain aspect ratio. The modifier has 3 options:
+interact.js 带有一个 `aspectRatio` 修饰符，可用于强制调整大小的矩形保持特定的纵横比。该修饰符有 3 个选项：
 
-| Prop         | Type                 | Description                                                                             |
-| ------------ | -------------------- | --------------------------------------------------------------------------------------- |
-| `ratio`      | number or 'preserve' | The aspect ratio to maintain or the value 'preserve' to maintain the starting ratio     |
-| `equalDelta` | boolean              | Increase edges by the same amount instead of maintaining the same ratio                 |
-| `modifiers`  | array of modifiers   | Modifiers to apply to the resize which will be made to respect the aspect ratio options |
+| 属性 | 类型 | 描述 |
+| ---- | ---- | ---- |
+| `ratio` | 数字或 'preserve' | 要维持的纵横比，或值 'preserve' 以维持起始比例 |
+| `equalDelta` | 布尔值 | 以相同的量增加边缘，而不是维持相同的比例 |
+| `modifiers` | 修饰符数组 | 应用于将遵守纵横比选项的调整大小的修饰符 |
 
-To guarantee that the aspect ratio options are respected by other modifiers,
-those modifiers must be in the `aspectRatio.modifiers` array option, **not** in the
-same `resize.modifiers` array as the `aspectRatio` one.
+要确保纵横比选项被其他修饰符尊重，这些修饰符必须在 `aspectRatio.modifiers` 数组选项中，**而不是**在与 `aspectRatio` 相同的 `resize.modifiers` 数组中。
 
 [interaction-start]: http://interactjs.io/api/#Interaction.start

@@ -1,16 +1,15 @@
 ---
-title: Modifiers
+title: 修改器
 ---
 
 ```js
-// create a restrict modifier to prevent dragging an element out of its parent
+// 创建一个restrict修改器来防止元素被拖拽出其父元素
 const restrictToParent = interact.modifiers.restrict({
   restriction: 'parent',
   elementRect: { left: 0, right: 0, top: 1, bottom: 1 },
 })
 
-// create a snap modifier which changes the event coordinates to the closest
-// corner of a grid
+// 创建一个snap修改器，将事件坐标修改为网格最近的角点
 const snap100x100 = interact.modifiers.snap({
   targets: [interact.snappers.grid({ x: 100, y: 100 })],
   relativePoints: [{ x: 0.5, y: 0.5 }],
@@ -18,16 +17,13 @@ const snap100x100 = interact.modifiers.snap({
 
 interact(target)
   .draggable({
-    // apply the restrict and then the snap modifiers to drag events
+    // 将restrict和snap修改器依次应用于拖拽事件
     modifiers: [restrictToParent, snap100x100],
   })
   .on('dragmove', event => console.log(event.pageX, event.pageY))
 ```
 
-`interact`'s `modifiers` let you change the coordinates of action events. The
-options object passed to action methods can have a `modifiers` array which will
-be applied to events of that action type. **Modifiers in the array are applied
-sequentially** and their order may affect the final result.
+`interact` 的 `modifiers` 允许你改变动作事件的坐标。传递给动作方法的选项对象可以包含一个 `modifiers` 数组，这些修改器将被应用到该动作类型的事件上。**数组中的修改器会按顺序依次应用**，它们的顺序可能会影响最终结果。
 
 ```js
 const snapAtEnd = interact.modifiers.snap({
@@ -36,10 +32,6 @@ const snapAtEnd = interact.modifiers.snap({
 })
 ```
 
-Modifiers can be set to apply only to the last move event in an interaction by
-setting their `endOnly` option to `true`. When an `endOnly` modifier is used
-with an action that has `inertia` enabled, the event coordinates will be
-smoothly moved from the up coords to the modified coords.
+通过设置修改器的 `endOnly` 选项为 `true`，可以让修改器仅应用于交互的最后一个移动事件。当一个 `endOnly` 修改器与启用了 `inertia` 的动作一起使用时，事件坐标将从松开时的坐标平滑过渡到修改后的坐标。
 
-interact.js comes with a vew different types of modifiers for
-[snapping](/docs/snapping) and [restricting](/docs/restriction) elements.
+interact.js 内置了几种不同类型的修改器，用于[对齐吸附](/docs/snapping)和[限制](/docs/restriction)元素。

@@ -1,27 +1,21 @@
 ---
-title: Migrating from v1.2
+title: 从 v1.2 版本迁移
 ---
 
-The latest versions fix several bugs, allows setting more options on a
-per-action basis, add configuration options to `pointerEvents` and add several
-new methods and options. The [changelog][changelog] lists all the major changes.
+最新版本修复了多个 bug，允许在每个操作的基础上设置更多选项，为 `pointerEvents` 添加了配置选项，并添加了一些新的方法和选项。[更新日志][changelog] 列出了所有主要变更。
 
-### Per-action modifiers array
+### 每个操作的修饰符数组
 
-Modifiers are now created with `interact.modifiers[modifierName](options)`
-methods. The return values returned by these methods go into the
-`actionOptions.modifiers` array. The lets you more easily reuse modifier
-configurations and specify their execution order.
+修饰符现在通过 `interact.modifiers[modifierName](options)` 方法创建。这些方法返回的值会被放入 `actionOptions.modifiers` 数组中。这让你可以更轻松地重用修饰符配置并指定它们的执行顺序。
 
 ```js
-// create a restrict modifier to prevent dragging an element out of its parent
+// 创建一个限制修饰符，防止元素被拖出其父元素
 const restrictToParent = interact.modifiers.restrict({
   restriction: 'parent',
   elementRect: { left: 0, right: 0, top: 1, bottom: 1 },
 })
 
-// create a snap modifier which changes the event coordinates to the closest
-// corner of a grid
+// 创建一个捕捉修饰符，将事件坐标变更为网格最近的角点
 const snap100x100 = interact.modifiers.snap({
   targets: [interact.snappers.grid({ x: 100, y: 100 })],
   relativePoints: [{ x: 0.5, y: 0.5 }],
@@ -29,48 +23,46 @@ const snap100x100 = interact.modifiers.snap({
 
 interact(target)
   .draggable({
-    // apply the restrict and then the snap modifiers to drag events
+    // 先应用限制修饰符，然后应用捕捉修饰符到拖拽事件
     modifiers: [restrictToParent, snap100x100],
   })
   .on('dragmove', event => console.log(event.pageX, event.pageY))
 ```
 
-### Improved resize snap and restrict
+### 改进的调整大小捕捉和限制
 
-There are a few new snap and restrict modifiers for resize actions:
+针对调整大小操作，新增了几个捕捉和限制修饰符：
 
-[Restrictions](/docs/restriction):
+[限制](/docs/restriction)：
 
-- pointer coordinate-based `restrict`
-- element rect-based restriction `restrictRect`
-- element size-based `restrictSize` (resize only)
-- and element edge-based `restrictEdges` (resize only)
+- 基于指针坐标的 `restrict`
+- 基于元素矩形的 `restrictRect`
+- 基于元素大小的 `restrictSize`（仅用于调整大小）
+- 基于元素边缘的 `restrictEdges`（仅用于调整大小）
 
-[Snapping](/docs/snapping):
+[捕捉](/docs/snapping)：
 
-- pointer coordinate-based `snap` which is best suited to drag actions,
-- `snapSize` which works only on resize actions and let's you set targets for
-  the size of the target element,
-- and `snapEdges` which is similar to `snapSize`, but let's you set the target
-  positions of the edges of the target element.
+- 基于指针坐标的 `snap`，最适合拖拽操作
+- `snapSize` 仅用于调整大小操作，让你可以为目标元素的大小设置捕捉目标
+- `snapEdges` 类似于 `snapSize`，但让你可以设置目标元素边缘的目标位置
 
 ```js
 interact(target).resize({
   edges: { bottom: true, right: true },
 
-  // sizes at fixed grid points
+  // 在固定网格点的大小
   snapSize: {
     targets: [
       interact.snappers.grid({ x: 25, y: 25, range: Infinity }),
     ],
   },
 
-  // minimum size
+  // 最小大小
   restrictSize: {
     min: { width: 100, height: 50 },
   },
 
-  // keep the edges inside the parent
+  // 保持边缘在父元素内
   restrictEdges: {
     outer: 'parent',
     endOnly: true,
@@ -78,21 +70,20 @@ interact(target).resize({
 })
 ```
 
-### Resize `aspectRatio` modifier
+### 调整大小的 `aspectRatio` 修饰符
 
-The resize `preserveAspectRatio` and `square` options have been replaced by an
-`aspectRatio` modifier which can cooperate with other modifiers.
+调整大小的 `preserveAspectRatio` 和 `square` 选项已被 `aspectRatio` 修饰符替代，它可以与其他修饰符协同工作。
 
 ```js
 interact(target).resizable({
   edges: { left: true, bottom: true },
   modifiers: [
     interact.modifiers.aspectRatio({
-      // ratio may be the string 'preserve' to maintain the starting aspect ratio,
-      // or any number to force a width/height ratio
+      // ratio 可以是字符串 'preserve' 以保持初始宽高比，
+      // 或任何数字以强制指定宽高比
       ratio: 'preserve',
-      // To add other modifiers that respect the aspect ratio,
-      // put them in the aspectRatio.modifiers array
+      // 要添加其他遵循宽高比的修饰符，
+      // 将它们放在 aspectRatio.modifiers 数组中
       modifiers: [interact.modifiers.restrictSize({ max: 'parent' })],
     }),
   ],
@@ -103,20 +94,19 @@ interact(target).resizable({
 interact(target).resizable({
   modifiers: [
     interact.modifiers.aspectRatio({
-      // The equalDelta option replaces the old resize.square option
+      // equalDelta 选项替代了旧的 resize.square 选项
       equalDelta: true,
     }),
   ],
 })
 ```
 
-### Removed Methods
+### 已移除的方法
 
-The methods in the table below were removed and replaced with action method
-options and modifier methods for the new modifiers array API:
+下表中的方法已被移除，改用操作方法选项和新的修饰符数组 API 的修饰符方法：
 
-| Method                                                     | Replaced with                                          |
-| ---------------------------------------------------------- | ------------------------------------------------------ |
+| 方法                                                      | 替代为                                                  |
+| --------------------------------------------------------- | ------------------------------------------------------ |
 | `interactable.squareResize(bool)`                          | `interact.modifiers.aspectRatio({ equalDelta: true })` |
 | `interactable.snap({ actions: ['drag'], ...snapOptions })` | `interact.modifiers.snap(snapOptions)`                 |
 | `interactable.restrict(restrictOptions)`                   | `interact.modifiers.restrict(restrictOptions)`         |
@@ -124,13 +114,9 @@ options and modifier methods for the new modifiers array API:
 | `interactable.accept('.can-be-dropped')`                   | `interactable.dropzone({ accept: '.can-be-dropped' })` |
 | `interact.margin(50)`                                      | `interactable.resizable({ margin: 50 })`               |
 
-### Action end event dx/dy
+### 操作结束事件的 dx/dy
 
-The `dx` and `dy` fields on `dragend`, `resizeend` and `gestureend` events were
-formally the difference between the start and end coordinates. Now they are
-always `0` (the difference between the end and the last move event). Use
-`event.X0` and `event.Y0` (or `event.clientX0` and `event.clientY0`) to get the
-starting coordinates and subtract them from the end event coordinates.
+在 `dragend`、`resizeend` 和 `gestureend` 事件中的 `dx` 和 `dy` 字段之前是起始和结束坐标之间的差值。现在它们始终为 `0`（结束和最后一个移动事件之间的差值）。使用 `event.X0` 和 `event.Y0`（或 `event.clientX0` 和 `event.clientY0`）获取起始坐标，并从结束事件坐标中减去它们。
 
 ```js
 interact(target).draggable({
@@ -140,15 +126,12 @@ interact(target).draggable({
 })
 ```
 
-### Drop events
+### 拖放事件
 
-`dragend` events are now fired _before_ `drop` events. Use
-`dragendEvent.relatedTarget` to get the dropzone element if there will be a drop
-event.
+`dragend` 事件现在在 `drop` 事件之前触发。使用 `dragendEvent.relatedTarget` 获取将要触发 drop 事件的放置区域元素。
 
-### Mouse buttons
+### 鼠标按钮
 
-By default, only the left mouse button can start actions. The `mouseButtons`
-action option can be used to change this.
+默认情况下，只有鼠标左键可以开始操作。可以使用 `mouseButtons` 操作选项来更改这一设置。
 
 [changelog]: https://github.com/taye/interact.js/blob/master/CHANGELOG.md

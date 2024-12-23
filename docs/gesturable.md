@@ -1,5 +1,5 @@
 ---
-title: Gesturable
+title: 手势操作
 ---
 
 ```html
@@ -37,22 +37,17 @@ interact('#rotate-area').gesturable({
 })
 ```
 
-Gesture events are triggered when two pointers go down and are moved. In
-gesture events, page and client coordinates are the averages of touch
-coordinates and velocity is calculated from these averages. The events also have
-the following properties:
+手势事件在两个触点按下并移动时触发。在手势事件中,页面和客户端坐标是触摸坐标的平均值,速度是根据这些平均值计算的。这些事件还具有以下属性:
 
-| Gesture Event property | Description                                                                       |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| `distance`             | The distance between the event's first two touches                                |
-| `angle`                | The angle of the line made by the two touches                                     |
-| `da`                   | The change in angle since previous event                                          |
-| `scale`                | The ratio of the distance of the start event to the distance of the current event |
-| `ds`                   | The change in scale since the previous event                                      |
-| `box`                  | A box enclosing all touch points                                                  |
+| 手势事件属性 | 描述 |
+|------------|------|
+| `distance` | 事件的前两个触点之间的距离 |
+| `angle` | 两个触点形成的线的角度 |
+| `da` | 相比上一个事件的角度变化 |
+| `scale` | 当前事件距离与起始事件距离的比率 |
+| `ds` | 相比上一个事件的缩放变化 |
+| `box` | 包含所有触点的边界框 |
 
 :::warning
-Remember to use CSS `touch-action: none` to prevent the browser from panning
-when the user drags with a touch pointer, and `user-select: none` to disable
-text selection.
+记得使用 CSS `touch-action: none` 来防止用户使用触摸指针拖动时浏览器发生平移,以及使用 `user-select: none` 来禁用文本选择。
 :::

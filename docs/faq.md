@@ -1,29 +1,24 @@
 ---
-title: FAQ
+title: 常见问题
 ---
 
-This page contains questions and issues that are frequently raised on [Gitter
-chat][gitter] and [Github issues][gh-issues].
+本页包含了在 [Gitter 聊天室][gitter] 和 [Github issues][gh-issues] 中经常提出的问题。
 
-## Start action after hold
+## 延迟开始拖动
 
-Use the `hold` option which takes the number of milliseconds that the pointer
-must be held down for.
+使用 `hold` 选项来设置指针必须按住多少毫秒才能开始拖动。
 
 ```javascript
 interact(target)
   .draggable({
-    // start dragging after the pointer is held down for 1 second
+    // 按住1秒后开始拖动
     hold: 1000
   })
 ```
 
-If you are having problems with default browser behaviour like scrolling,
-context menus, etc. have a look at the
-[`Interactable#preventDefault`][prevent-default] method and this [thread on
-Github](https://github.com/taye/interact.js/issues/138).
+如果你遇到浏览器默认行为(如滚动、上下文菜单等)的问题,可以查看 [`Interactable#preventDefault`][prevent-default] 方法和这个 [Github 上的讨论](https://github.com/taye/interact.js/issues/138)。
 
-## Clone target draggable
+## 克隆目标元素进行拖动
 
 ```html
 <div class="item"></div>
@@ -35,28 +30,26 @@ interact('.item')
   .on('move', function (event) {
     var interaction = event.interaction
 
-    // if the pointer was moved while being held down
-    // and an interaction hasn't started yet
+    // 如果指针在按下时移动
+    // 并且交互还没有开始
     if (interaction.pointerIsDown && !interaction.interacting()) {
       var original = event.currentTarget,
-        // create a clone of the currentTarget element
+        // 创建当前目标元素的克隆
         clone = event.currentTarget.cloneNode(true)
 
-      // insert the clone to the page
-      // TODO: position the clone appropriately
+      // 将克隆元素插入页面
+      // TODO: 适当定位克隆元素
       document.body.appendChild(clone)
 
-      // start a drag interaction targeting the clone
+      // 开始一个以克隆元素为目标的拖动交互
       interaction.start({ name: 'drag' }, event.interactable, clone)
     }
   })
 ```
 
-There's no direct API to drag a clone of the target element. However, you can
-use [`Interaction#start`][interaction-start] to change the target of an
-interaction to any element that you create.
+没有直接的API来拖动目标元素的克隆。不过,你可以使用 [`Interaction#start`][interaction-start] 来将交互的目标更改为你创建的任何元素。
 
-## Remove / destroy / release
+## 移除/销毁/释放
 
 ```javascript
 interact(target).draggable(true).resizable(true)
@@ -70,25 +63,22 @@ interact(target).draggable() // false
 interact(target).resizable() // false
 ```
 
-To remove an Interactable, use `interact(target).unset()`. That should remove
-all event listeners and make interact.js forget completely about the target.
+要移除一个 Interactable,使用 `interact(target).unset()`。这会移除所有事件监听器并使 interact.js 完全忘记该目标。
 
-## Changing dropzones while dragging
+## 拖动时改变放置区域
 
 ```javascript
 interact.dynamicDrop(true)
 ```
 
-If you're adding or removing dropzone elements or changing their dimensions
-while dragging, you may need to change the [`dynamicDrop`][dynamic-drop] setting
-to true so that the dropzones rects are recalculated after every `dragmove`.
+如果你在拖动过程中添加或删除放置区域元素或改变它们的尺寸,你可能需要将 [`dynamicDrop`][dynamic-drop] 设置为 true,这样每次 `dragmove` 后都会重新计算放置区域的矩形。
 
-## Drag handle
+## 拖动手柄
 
 ```html
 <div class="item">
-  A draggable item
-  <div class="handle">Handle</div>
+  一个可拖动项
+  <div class="handle">手柄</div>
 </div>
 ```
 
@@ -98,15 +88,13 @@ interact('.item').draggable({
 })
 ```
 
-To make an element be the handle of a parent draggable, use the allowFrom
-setting option to allow an action to start only if the element matches a
-certain CSS selector or is a specific element.
+要将一个元素设置为父级可拖动元素的手柄,使用 allowFrom 选项来只允许在匹配特定 CSS 选择器或特定元素的情况下才开始操作。
 
-## Prevent actions on child
+## 阻止子元素上的操作
 
 ```html
 <div class="resizable">
-  A resizable item
+  一个可调整大小的项
   <textarea></textarea>
 </div>
 ```
@@ -114,22 +102,18 @@ certain CSS selector or is a specific element.
 ```javascript
 interact('.item')
   .draggable({
-    // don't drag from textarea elments
+    // 不从 textarea 元素开始拖动
     ignoreFrom: 'textarea',
   });
 ```
 
-Use the `ignoreFrom` option to prevent actions from starting if the pointer
-went down on an element matching the given selector or HTMLElement.
+使用 `ignoreFrom` 选项可以在指针按下时,如果目标元素匹配给定的选择器或 HTMLElement,则阻止操作开始。
 
-## Revert / restore / undo drag position
+## 恢复/回退/撤销拖动位置
 
-There's no direct API to revert a dragged element to it's position before the
-drag. To do this, you must store the position at `dragstart` and change the
-element's style so that it returns to the start position on `dragend`. You can
-use CSS transitions to animate change in position.
+没有直接的API可以将拖动的元素恢复到拖动前的位置。要实现这个功能,你必须在 `dragstart` 时存储位置,并在 `dragend` 时更改元素样式使其返回起始位置。你可以使用 CSS 过渡来让位置变化产生动画效果。
 
-## Dragging scrolls instead
+## 拖动变成了滚动
 
 ```css
 .draggable, .resizable, .gesturable {
@@ -139,14 +123,11 @@ use CSS transitions to animate change in position.
 }
 ```
 
-To allow touch interactions without scrolling or zooming, use the [`touch-action` CSS
-property][touch-action].
+要允许触摸交互而不引起滚动或缩放,使用 [`touch-action` CSS 属性][touch-action]。
 
-## Dragging between iFrames
+## 在 iFrame 之间拖动
 
-There is [limited support][iframe-pr] for using interact.js across iFrames. There are
-currently browser inconsistencies and other issues which have yet to be
-addressed.
+interact.js 对跨 iFrame 使用提供[有限支持][iframe-pr]。目前存在浏览器兼容性问题和其他尚未解决的问题。
 
 [gitter]: https://gitter.im/taye/interact.js
 [gh-issues]: https://github.com/taye/interact.js/issues

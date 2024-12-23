@@ -1,69 +1,56 @@
 ---
-title: Action Options
+title: 交互选项
 ---
 
-The `Interactable` methods `draggable()`, `resizable()` and `gesturable()` are
-used to enable and configure actions for target elements. They all have some
-common options as well as some action-specific options and event properties.
+`Interactable` 的方法 `draggable()`、`resizable()` 和 `gesturable()` 用于启用和配置目标元素的交互动作。它们都有一些通用选项以及特定于动作的选项和事件属性。
 
-Drag, resizem and gesture interactions fire `InteractEvent`s which have the
-following properties common to all action types:
+拖拽、调整大小和手势交互会触发 `InteractEvent` 事件，所有动作类型都具有以下共同的属性：
 
-| InteractEvent property   | Description                                      |
-| ------------------------ | ------------------------------------------------ |
-| `target`                 | The element that is being interacted with        |
-| `interactable`           | The Interactable that is being interacted with   |
-| `interaction`            | The Interaction that the event belongs to        |
-| `x0`, `y0`               | Page x and y coordinates of the starting event   |
-| `clientX0`, `clientY0`   | Client x and y coordinates of the starting event |
-| `dx`, `dy`               | Change in coordinates of the mouse/touch         |
-| `velocityX`, `velocityY` | The Velocity of the pointer                      |
-| `speed`                  | The speed of the pointer                         |
-| `timeStamp`              | The time of creation of the event object         |
+| InteractEvent 属性      | 描述                                |
+| ---------------------- | ---------------------------------- |
+| `target`               | 正在交互的元素                        |
+| `interactable`         | 正在交互的 Interactable 对象          |
+| `interaction`          | 事件所属的交互对象                     |
+| `x0`, `y0`            | 起始事件的页面 x 和 y 坐标             |
+| `clientX0`, `clientY0` | 起始事件的客户端 x 和 y 坐标           |
+| `dx`, `dy`            | 鼠标/触摸坐标的变化量                  |
+| `velocityX`, `velocityY`| 指针的速度分量                       |
+| `speed`               | 指针的速度                           |
+| `timeStamp`           | 事件对象的创建时间                     |
 
-## Common Action Options
+## 通用交互选项
 
-The Interactable methods `draggable`, `resizable` and `gesturable` take either
-`true` or `false` to simply allow/disallow the action or an object with
-properties to change certain settings.
+Interactable 方法 `draggable`、`resizable` 和 `gesturable` 可以接受 `true` 或 `false` 来简单地允许/禁止操作，也可以接受一个包含属性的对象来更改某些设置。
 
 ### `max`
 
-`max` is used to limit the number of concurrent interactions that can target an
-interactable. By default, any number of interactions can target an
-interactable.
+`max` 用于限制可以同时针对一个 interactable 的交互数量。默认情况下，任意数量的交互都可以针对一个 interactable。
 
 ### `maxPerElement`
 
-By default only 1 interaction can target the same interactable+element
-combination. If you want to allow multiple interactions on the same target
-element, set the `maxPerElement` property of your object to a value `>= 2`.
+默认情况下，每个 interactable+元素组合只能有 1 个交互。如果你想允许同一目标元素上有多个交互，请将对象的 `maxPerElement` 属性设置为 `>= 2` 的值。
 
 ### `manualStart`
 
-If this is changed to `true` then drag, resize and gesture actions will have to
-be started with a call to [`Interaction#start`][interaction-start] as the usual
-`down`, `move`, `<action>start`... sequence will not start an action. See
-[auto-start](/docs/auto-start).
+如果设置为 `true`，则拖拽、调整大小和手势操作必须通过调用 [`Interaction#start`][interaction-start] 来启动，因为通常的 `down`、`move`、`<action>start`... 序列将不会启动操作。参见 [auto-start](/docs/auto-start)。
 
 ### `hold`
 
-The action will start after the pointer is held down for the given number of milliseconds.
+操作将在指针按下并保持指定的毫秒数后才开始。
 
 ### `inertia`
 
-Change inertia settings for drag, and resize. See [docs/inertia](/docs/inertia).
+更改拖拽和调整大小的惯性设置。参见 [docs/inertia](/docs/inertia)。
 
 ### `styleCursor`
 
-If the [auto-start](/docs/auto-start) feature is enabled, interact will style
-the cursor of draggable and resizable elements as you hover over them.
+如果启用了 [auto-start](/docs/auto-start) 功能，当你悬停在可拖拽和可调整大小的元素上时，interact 将会设置相应的鼠标样式。
 
 ```js
 interact(target).styleCursor(false)
 ```
 
-To disable this for all actions, set the `styleCursor` option to `false`
+要禁用所有操作的这个功能，请将 `styleCursor` 选项设置为 `false`
 
 ### `cursorChecker`
 
@@ -86,11 +73,7 @@ interact(target)
   })
 ```
 
-You can disable default cursors with `interact(target).styleCursor(false)`, but
-that will disable cursor styling for all actions. To disable or change the
-cursor for each action, you can set a `cursorChecker` function which takes info
-about the current interaction and returns the CSS cursor value to set on the
-target element.
+你可以使用 `interact(target).styleCursor(false)` 禁用默认光标，但这将禁用所有操作的光标样式。要禁用或更改每个操作的光标，你可以设置一个 `cursorChecker` 函数，该函数接收当前交互的信息并返回要设置在目标元素上的 CSS 光标值。
 
 ### `autoScroll`
 
@@ -110,10 +93,9 @@ interact(element)
   })
 ```
 
-Scroll a container (`window` or an HTMLElement) when a drag or resize move
-happens at the edge of the container.
+当拖拽或调整大小的移动发生在容器边缘时，滚动容器（`window` 或 HTMLElement）。
 
-### `allowFrom` (handle)
+### `allowFrom`（句柄）
 
 ```html
 <div class="movable-box">
@@ -136,15 +118,10 @@ interact('.movable-box')
   })
 ```
 
-The `allowFrom` option lets you specify a target CSS selector or Element which
-must be the target of the pointer down event in order for the action to start.
-This option available for drag, resize and gesture, as well as `pointerEvents`
-(down, move, hold, etc.). Using the `allowFrom` option, you may specify handles
-for each action separately and for all your pointerEvents listeners.
+`allowFrom` 选项允许你指定一个目标 CSS 选择器或元素，只有当指针按下事件的目标是这个元素时，操作才能开始。这个选项适用于拖拽、调整大小和手势操作，以及 `pointerEvents`（按下、移动、保持等）。使用 `allowFrom` 选项，你可以为每个操作和所有 pointerEvents 监听器分别指定句柄。
 
 :::warning
-The `allowFrom` elements **must** be children of the target interactable
-element.
+`allowFrom` 元素**必须**是目标 interactable 元素的子元素。
 :::
 
 ### `ignoreFrom`
@@ -173,17 +150,10 @@ interact(movable)
   })
 ```
 
-The compliment to `allowFrom`, `ignoreFrom` lets you specify elements within
-your target with which to avoid starting actions. This is useful when certain
-elements need to maintain default behavior when interacted with. For example,
-dragging around a text/contentEditable, by wrapping this object with a
-draggable element and ignoring the editable content you maintain the ability to
-highlight text without moving the element.
+作为 `allowFrom` 的补充，`ignoreFrom` 允许你指定目标元素内要避免启动操作的元素。当某些元素需要保持默认行为时，这很有用。例如，通过将文本/contentEditable 包装在可拖动元素中并忽略可编辑内容，你可以保持突出显示文本的能力而不移动元素。
 
 ### `enabled`
 
-Enable the action for the Interactable. If the options object has no `enabled`
-property or the property value is `true` then the action is enabled. If
-`enabled` is false, the action is disabled.
+为 Interactable 启用操作。如果选项对象没有 `enabled` 属性或属性值为 `true`，则启用该操作。如果 `enabled` 为 false，则禁用该操作。
 
 [interaction-start]: /docs/auto-start

@@ -1,10 +1,10 @@
 const CodeSandbox = ({ id }: { id: number }) => {
     return (
         <iframe
-            src={`https://codesandbox.io/embed/${id}?hidenavigation=1&view=split&hidedevtools=1`}
+            src={`https://codesandbox.io/embed/${id}?hidenavigation=1&view=split&hidedevtools=1&fontsize=12`}
             style={{
                 width: '100%',
-                height: '500px',
+                height: '600px',
                 border: 0,
                 borderRadius: '4px',
                 overflow: 'hidden',

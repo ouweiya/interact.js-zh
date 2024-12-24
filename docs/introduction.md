@@ -11,7 +11,7 @@ interact.js 是一个用于现代浏览器的拖放、调整大小和多点触�
 请注意，默认情况下 **interact.js 不会为你移动元素**。在拖动发生时设置元素的样式必须通过你自己的事件监听器来完成。这样，你可以完全控制所发生的一切。
 
 :::note
-如果你更喜欢开箱即用的反馈效果，不妨看看 <a href="/pro">interact.js Pro</a>。它带有内置的硬件加速反馈、列表重排序、弹簧物理效果、Vue & React 组件等更多功能。
+如果你更喜欢开箱即用的反馈效果，不妨看看 <a href="https://interactjs.io/pro" target='_blank'>interact.js Pro</a>。它带有内置的硬件加速反馈、列表重排序、弹簧物理效果、Vue & React 组件等更多功能。
 :::
 
 <div class="has-text-centered notice-cta">

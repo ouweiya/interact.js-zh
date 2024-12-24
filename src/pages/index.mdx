@@ -1,0 +1,71 @@
+import CodeSandbox from '../components/CodeSandbox';
+
+# Interact.js
+
+### 适用于现代浏览器（以及IE9+）的JavaScript拖放、调整大小和多点触控手势库
+
+-   免费开源
+-   强大的吸附和限制修饰器
+-   惯性抛掷
+-   支持多个同时交互
+-   统一的触摸和鼠标事件API
+-   自动滚动
+-   支持HTML和SVG
+
+```js
+<script type="module">
+    import interact from 'https://cdn.interactjs.io/v1.10.27/interactjs/index.js';
+
+    interact('.item').draggable({
+        listeners: {
+            move(event) {
+                console.log(event.pageX, event.pageY);
+            },
+        },
+    });
+</script>
+```
+
+## 它是如何工作的？
+
+interact.js 采用了与大多数拖放库略有不同的方法。为了给你提供尽可能多的控制权，它试图提供一个简单、灵活的API，为你提供所有需要的指针事件数据来移动元素。
+
+这个库甚至不会执行任何移动操作！这很棒，因为你可以完全决定用户获得什么样的反馈。你可以拖动元素、在画布上绘画，或者（如果你真的需要）滚动页面。
+
+看看下面的演示来了解API是如何工作的，或者阅读[文档](./docs/installation)。
+
+### 彩虹像素画布
+
+<CodeSandbox id="2js8m4" />
+
+### 拖动
+
+<CodeSandbox id="mvy487" />
+
+### 拖放
+
+<CodeSandbox id="fsghvc" />
+
+### 吸附
+
+<CodeSandbox id="33686z" />
+
+### 调整大小
+
+<CodeSandbox id="xnkzqy" />
+
+### 多点触控旋转（仅触摸屏）
+
+<CodeSandbox id="kwv563" />
+
+### 捏合缩放（仅触摸屏）
+
+<CodeSandbox id="8rvjcd" />
+
+### 在SVG文件中使用
+
+<CodeSandbox id="fnwcwt" />
+
+### 点击、双击和长按
+
+<CodeSandbox id="p93wn3" />
